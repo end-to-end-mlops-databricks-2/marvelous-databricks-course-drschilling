@@ -1,14 +1,17 @@
-import pandas as pd
+import pandas 
 import re
 import logging
+
+from logging_config import setup_logging
 from pyspark.sql import SparkSession
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+setup_logging()
 
 class DataHandler:
     """A class for loading and writing data."""
 
-    def __init__(self, filepath=None, spark_session: SparkSession = None):
+    def __init__(self, filepath=None,
+                 spark_session: SparkSession = None):
         """
         Initialize the DataHandler with an optional file path and Spark session.
 
@@ -18,7 +21,7 @@ class DataHandler:
         """
         self.filepath = filepath
         self.data = None
-        self.spark = spark_session
+        self.logger = logging.getLogger(__name__)
 
     def load_data(self, filepath=None):
         """
@@ -35,14 +38,15 @@ class DataHandler:
 
         path_to_load = filepath if filepath else self.filepath
         try:
-            self.data = pd.read_csv(path_to_load)
-            logging.info(f"Data successfully loaded from {path_to_load}.")
-            return self.data
+            self.data = pandas.read_csv(path_to_load)
+            column_normalized_data = self.normalize_column_names(self.data)
+            self.logger.info(f"Data successfully loaded from {path_to_load}.")
+            return column_normalized_data
         except FileNotFoundError:
-            logging.error(f"File not found at {path_to_load}. Please check the path.")
+            self.logger.error(f"File not found at {path_to_load}. Please check the path.")
             raise FileNotFoundError(f"File not found at {path_to_load}. Please check the path.")
         except Exception as e:
-            logging.error(f"An error occurred while loading the file: {e}")
+            self.logger.error(f"An error occurred while loading the file: {e}")
             raise Exception(f"An error occurred while loading the file: {e}")
 
     def write_data(self, pandas_df, catalog_name, schema_name, table_name):
@@ -55,7 +59,7 @@ class DataHandler:
             schema_name (str): The name of the schema. 
             table_name (str): The name of the table.
         """
-        if pandas_df is None or not isinstance(pandas_df, pd.DataFrame):
+        if pandas_df is None or not isinstance(pandas_df, pandas.DataFrame):
             raise ValueError("A valid pandas DataFrame must be provided.")
 
         if not catalog_name or not schema_name or not table_name:
@@ -70,15 +74,14 @@ class DataHandler:
                 .mode('overwrite') \
                 .saveAsTable(full_table_name)
 
-            logging.info(f"Data successfully written to Delta table: {full_table_name}")
+            self.logger.info(f"Data successfully written to Delta table: {full_table_name}")
         except Exception as e:
-            logging.error(f"An error occurred while writing to the Delta table: {e}")
+            self.logger.error(f"An error occurred while writing to the Delta table: {e}")
             raise Exception(f"An error occurred while writing to the Delta table: {e}")
 
-    @staticmethod
-    def normalize_column_names(df):
+    def normalize_column_names(self, df):
         """Normalize column names to lowercase with words separated by underscores."""
-        if df is None or not isinstance(df, pd.DataFrame):
+        if df is None or not isinstance(df, pandas.DataFrame):
             raise ValueError("A valid pandas DataFrame must be provided.")
 
         normalized_columns = [
@@ -86,4 +89,4 @@ class DataHandler:
         ]
         
         df.columns = normalized_columns
-        logging.info("Column names normalized.")
+        self.logger.info("Column names normalized.")
