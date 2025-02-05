@@ -21,6 +21,7 @@ class DataHandler:
         """
         self.filepath = filepath
         self.data = None
+        self.spark = spark_session
         self.logger = logging.getLogger(__name__)
 
     def load_data(self, filepath=None):
