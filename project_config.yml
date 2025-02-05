@@ -1,0 +1,20 @@
+data: /Volumes/foundation/default/volumes/tetuan_city_power_ consumption.csv
+
+num_features:
+  - temperature
+  - humidity
+  - wind_speed
+  - general_diffuse_flows
+  - diffuse_flows
+
+temporal_features:
+ - datetime
+
+targets: 
+- zone_1_power_consumption
+- zone_2_power_consumption
+- zone_3_power_consumption
+
+catalog_name: foundation
+
+schema_name: default
