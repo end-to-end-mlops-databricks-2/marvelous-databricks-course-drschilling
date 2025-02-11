@@ -89,7 +89,7 @@ class DataHandler:
             raise ValueError("A valid pandas DataFrame must be provided.")
 
         normalized_columns = [
-            re.sub(r'\s+', '_', col.lower()).strip() for col in df.columns
+            re.sub(r'\s+', '_', col.lower()).strip() for col in pandas_dataset.columns
         ]
         
         pandas_dataset.columns = normalized_columns

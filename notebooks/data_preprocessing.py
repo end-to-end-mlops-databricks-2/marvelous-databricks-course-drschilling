@@ -21,10 +21,18 @@ data_handler_instance = DataHandler(filepath=config.data_source,
                            spark_session=spark)
 
 data_input = data_handler_instance.load_data()
+print(data_input.columns)
 
 data_preprocess_instance = DataPreprocessor(data_input)
 
-
+try:
+    
+    X_train, X_test, y_train, y_test = data_preprocess_instance.preprocess_and_split()
+    
+except FileNotFoundError:
+    logger.error("Error: 'your_data.csv' not found.  Make sure the file exists and the path is correct.")
+except Exception as e:
+    logger.exception(f"An error occurred: {e}")
 
 
 
