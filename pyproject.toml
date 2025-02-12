@@ -33,10 +33,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where =["src"]
-
-[lint]
-ignore = ["E501", "W503"]
-select = ["E", "W", "F", "C", "I"]
+include = ["helpers", "utils"]
 
 [tool.ruff]
 line-length = 120

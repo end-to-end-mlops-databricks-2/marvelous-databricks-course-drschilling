@@ -9,7 +9,7 @@ numeric_features:
 
 temporal_features: datetime
 
-targets: 
+targets:
 - zone_1_power_consumption
 - zone_2_power_consumption
 - zone_3_power_consumption
