@@ -15,9 +15,15 @@ class DataPreprocessor:
 
     def indexing_data(self):
         """Format the datetime column and set it as the index."""
+        
         self.logger.info(self.data.columns)
-        self.data['datetime'] = pandas.to_datetime(self.data['datetime'], format='%d/%m/%Y %H:%M:%S')
+        if isinstance(self.data['datetime'].iloc[0], str): 
+            self.data['datetime'] = self.data['datetime'].str.strip()
+            
+        self.data['datetime'] = pandas.to_datetime(self.data['datetime'], infer_datetime_format=True, errors='coerce')
+
         self.data.set_index('datetime', inplace=True)
+
         self.logger.info("Datetime column formatted and set as index.")
 
     def date_engineering(self):
