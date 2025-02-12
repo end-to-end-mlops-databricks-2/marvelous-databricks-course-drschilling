@@ -1,8 +1,8 @@
-import pandas
 import logging
-from sklearn.preprocessing import MinMaxScaler
+import pandas
 from sklearn.model_selection import train_test_split
-from src.utils.logging_config import setup_logging 
+from sklearn.preprocessing import MinMaxScaler
+from src.utils.logging_config import setup_logging
 
 setup_logging() 
 
