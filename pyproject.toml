@@ -33,7 +33,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where =["src"]
-include = ["house_price*"]
 
 [tool.ruff]
 line-length = 120

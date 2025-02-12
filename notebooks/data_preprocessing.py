@@ -1,10 +1,10 @@
 import logging
 from pyspark.sql import SparkSession
 
-from src.helpers.data_handler import DataHandler
-from src.utils.model_config import ModelConfig
-from src.utils.logging_config import setup_logging
-from src.helpers.data_preprocessor_helper import DataPreprocessor
+from helpers.data_handler import DataHandler
+from utils.model_config import ModelConfig
+from utils.logging_config import setup_logging
+from helpers.data_preprocessor_helper import DataPreprocessor
 
 # Logging setup 
 setup_logging()
